@@ -1,8 +1,8 @@
-import homeService from '../services/homeService'
+import apiServices from '../services/apiServices'
 
-let getAllUser = async (req, res) => {
+let handleRegister = async (req, res) => {
     try {
-        let infor = await homeService.getAllUser();
+        let infor = await apiServices.handleRegister(req.body);
         return res.status(200).json(infor);
     } catch (e) {
         console.log(e)
@@ -14,5 +14,5 @@ let getAllUser = async (req, res) => {
 }
 
 module.exports = {
-    getAllUser
+    handleRegister
 }

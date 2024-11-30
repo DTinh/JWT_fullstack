@@ -1,11 +1,11 @@
 import express from "express";
-import homeController, { getAllUser } from '../controllers/homeController';
+import apiControllers, { handleRegister } from '../controllers/apiControllers';
 
 let router = express.Router();
 
-let initWebRoutes = (app) => {
-    router.get('/home', getAllUser);
+let initApiRoutes = (app) => {
+    router.post('/register', handleRegister);
 
-    return app.use('/', router);
+    return app.use('/api/v1/', router);
 }
-module.exports = initWebRoutes
+module.exports = initApiRoutes

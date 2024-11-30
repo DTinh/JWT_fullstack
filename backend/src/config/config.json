@@ -9,7 +9,8 @@
     "query": {
       "raw": true
     },
-    "freezeTableName": true
+    "freezeTableName": true,
+    "logging": false
   },
   "test": {
     "username": "root",
