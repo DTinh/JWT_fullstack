@@ -1,7 +1,8 @@
 import { where } from "sequelize";
 import db from "../models/index";
-
-
+import { reject } from "lodash";
+import { Op } from 'sequelize';
+import bcrypt from 'bcryptjs';
 let checkEmailExist = async (userEmail) => {
     let user = await db.User.findOne({
         where: { email: userEmail }
@@ -71,6 +72,42 @@ let handleRegister = (data) => {
         }
     })
 }
+let checkPassword = (inputPassword, hashPassword) => {
+    return bcrypt.compareSync(inputPassword, hashPassword);
+}
+let handleUserLogin = (rawData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let user = await db.User.findOne({
+                where: {
+                    [Op.or]: [
+                        { email: rawData.valueLogin },
+                        { phone: rawData.valueLogin }
+                    ]
+                }
+            })
+            // console.log("check js object", user.get({ plain: true }));
+            // console.log("check sequelize object", user);
+            if (user) {
+                let isCorrectPassword = checkPassword(rawData.password, user.password);
+                if (isCorrectPassword === true) {
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'Login succeed!'
+                    })
+                }
+            }
+
+            resolve({
+                errCode: 1,
+                errMessage: 'Your email/phone number or password is incorrect!'
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 module.exports = {
-    handleRegister
+    handleRegister, handleUserLogin
 }
