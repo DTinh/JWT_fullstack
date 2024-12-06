@@ -35,7 +35,15 @@ let getUserWithPagination = async (page, limit) => {
         let offset = (page - 1) * limit;
         const { count, rows } = await db.User.findAndCountAll({
             offset: offset,
-            limit: limit
+            limit: limit,
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                { model: db.Group, attributes: ['name', 'description'] }
+            ],
+            raw: true,
+            nest: true
         })
         let totalPages = Math.ceil(count / limit);
 
@@ -96,15 +104,30 @@ let updateUser = async (data) => {
 }
 let deleteUser = async (id) => {
     try {
-        await db.User.findOne({
+        let user = await db.User.findOne({
             where: { id: id }
         })
+        if (!user) {
+            return {
+                errCode: 2,
+                errMessage: 'User not exist',
+                data: []
+            }
+        }
+        await db.User.destroy({
+            where: { id: id }
+        })
+        return {
+            errCode: 0,
+            errMessage: 'Delete user success',
+            data: []
+        }
     } catch (e) {
         console.log(e);
         return {
             errCode: 1,
             errMessage: 'something wrongs with services',
-            users: []
+            data: []
         }
     }
 }
