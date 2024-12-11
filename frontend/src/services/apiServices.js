@@ -12,6 +12,14 @@ const fetchAllUsers = (page, limit) => {
 const deleteUser = (user) => {
     return axios.delete(`http://localhost:2211/api/v1/user/delete`, { data: { id: user.id } })
 }
+
+const fetchAllGroup = () => {
+    return axios.get(`http://localhost:2211/api/v1/group/read`)
+}
+const createNewUser = (userData) => {
+    return axios.post(`http://localhost:2211/api/v1/user/create`, { ...userData })
+}
 export {
-    handleRegisterService, loginUser, fetchAllUsers, deleteUser
+    handleRegisterService, loginUser, fetchAllUsers, deleteUser,
+    fetchAllGroup, createNewUser
 }

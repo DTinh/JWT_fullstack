@@ -5,13 +5,17 @@ import { fetchAllUsers, deleteUser } from '../../services/apiServices';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import ModalDelete from './ModalDelete';
+import ModalUser from './ModalUser';
 const Users = (props) => {
     const [listUsers, setListUser] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentLimit, setCurrentLimit] = useState(3);
     const [totalPage, setTotalPage] = useState(0);
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
-    const [dataModal, setDataModal] = useState({});
+    const [isShowModalUser, setIsShowModalUser] = useState(false);
+    const [dataModalDelete, setDataModal] = useState({});
+    const [actionModalUser, setActionModalUser] = useState('CREATE');
+    const [dataModalUser, setDataModalUser] = useState({});
     useEffect(() => {
         fetchUsers();
     }, [currentPage])
@@ -33,9 +37,10 @@ const Users = (props) => {
     const handleClose = () => {
         setDataModal({});
         setIsShowModalDelete(false);
+        setIsShowModalUser(false);
     }
     const confiemDeleteUser = async () => {
-        let res = await deleteUser(dataModal);
+        let res = await deleteUser(dataModalDelete);
         if (res && res.errCode === 0) {
             setIsShowModalDelete(false);
             toast.success(res.errMessage);
@@ -44,6 +49,13 @@ const Users = (props) => {
             toast.error(res.errMessage);
         }
 
+    }
+    const handleCreateUser = () => {
+        setIsShowModalUser(true);
+    }
+    const handleEditUser = (user) => {
+        setDataModalUser(user);
+        setIsShowModalUser(true);
     }
     return (
         <>
@@ -57,7 +69,9 @@ const Users = (props) => {
                         </div>
                         <div className='action'>
                             <button className='btn btn-success'>Refesh</button>
-                            <button className='btn btn-primary'>Add new user</button>
+                            <button className='btn btn-primary'
+                                onClick={() => handleCreateUser()}
+                            >Add new user</button>
                         </div>
                     </div>
                     <div className='user-body'>
@@ -77,14 +91,14 @@ const Users = (props) => {
                                         {listUsers.map((item, index) => {
                                             return (
                                                 <tr key={`row-${index}`}>
-                                                    <td>{index + 1}</td>
+                                                    <td>{(currentPage - 1) * currentLimit + index + 1}</td>
                                                     <td>{item.id}</td>
                                                     <td>{item.email}</td>
                                                     <td>{item.username}</td>
                                                     <td>{item.Group ? item.Group.name : ''}</td>
                                                     <td>
                                                         <button className='btn btn-warning mx-3'
-
+                                                            onClick={() => handleEditUser(item)}
                                                         >Edit</button>
                                                         <button className='btn btn-danger'
                                                             onClick={() => handleDeleteUser(item)}
@@ -133,7 +147,13 @@ const Users = (props) => {
                 show={isShowModalDelete}
                 handleClose={handleClose}
                 confiemDeleteUser={confiemDeleteUser}
-                dataModal={dataModal}
+                dataModalDelete={dataModalDelete}
+            />
+            <ModalUser
+                show={isShowModalUser}
+                handleClose={handleClose}
+                action={actionModalUser}
+                dataModalUser={dataModalUser}
             />
         </>
 
