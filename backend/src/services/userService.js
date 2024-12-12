@@ -55,7 +55,7 @@ let getUserWithPagination = async (page, limit) => {
                 exclude: ['password']
             },
             include: [
-                { model: db.Group, attributes: ['name', 'description'] }
+                { model: db.Group, attributes: ['name', 'description', 'id'] }
             ],
             order: [
                 ['id', 'DESC']
@@ -148,16 +148,37 @@ let createNewUser = async (data) => {
 
 let updateUser = async (data) => {
     try {
+        if (!data.groupId) {
+            return {
+                errCode: 1,
+                errMessage: 'Error empty groupId',
+                data: 'group'
+            }
+        }
         let user = await db.User.findOne({
-            where: { id: data.id }
+            where: { id: data.id },
+            nest: true
         })
         if (user) {
             //update
-            user.save({
-
-            })
+            await db.User.update({
+                username: data.username,
+                address: data.address,
+                sex: data.sex,
+                groupId: data.groupId
+            }, { where: { id: data.id } });
+            return {
+                errCode: 0,
+                errMessage: 'Update user succeed',
+                data: ''
+            }
         } else {
             //not found
+            return {
+                errCode: 2,
+                errMessage: 'User not found',
+                data: ''
+            }
         }
     } catch (e) {
         console.log(e);

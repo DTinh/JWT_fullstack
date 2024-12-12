@@ -19,7 +19,10 @@ const fetchAllGroup = () => {
 const createNewUser = (userData) => {
     return axios.post(`http://localhost:2211/api/v1/user/create`, { ...userData })
 }
+const updateCurrentUser = (userData) => {
+    return axios.put(`http://localhost:2211/api/v1/user/update`, { ...userData })
+}
 export {
     handleRegisterService, loginUser, fetchAllUsers, deleteUser,
-    fetchAllGroup, createNewUser
+    fetchAllGroup, createNewUser, updateCurrentUser
 }

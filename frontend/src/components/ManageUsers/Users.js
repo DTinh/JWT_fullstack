@@ -34,10 +34,12 @@ const Users = (props) => {
         setDataModal(user);
         setIsShowModalDelete(true);
     }
-    const handleClose = () => {
+    const handleClose = async () => {
         setDataModal({});
         setIsShowModalDelete(false);
         setIsShowModalUser(false);
+        setDataModalUser({});
+        await fetchUsers();
     }
     const confiemDeleteUser = async () => {
         let res = await deleteUser(dataModalDelete);
@@ -52,10 +54,15 @@ const Users = (props) => {
     }
     const handleCreateUser = () => {
         setIsShowModalUser(true);
+        setActionModalUser('CREATE');
     }
     const handleEditUser = (user) => {
+        setActionModalUser('UPDATE')
         setDataModalUser(user);
         setIsShowModalUser(true);
+    }
+    const handleRefesh = async () => {
+        await fetchAllUsers();
     }
     return (
         <>
@@ -63,15 +70,17 @@ const Users = (props) => {
                 <div className='manage-users-container'>
                     <div className='user-header'>
                         <div>
-                            <h3>
+                            <h3 className='title mt-3'>
                                 Table User
                             </h3>
                         </div>
                         <div className='action'>
-                            <button className='btn btn-success'>Refesh</button>
+                            <button className='btn btn-success refesh'><i className="fa fa-refresh"
+                                onClick={() => handleRefesh()}
+                            ></i>Refesh</button>
                             <button className='btn btn-primary'
                                 onClick={() => handleCreateUser()}
-                            >Add new user</button>
+                            ><i className="fa fa-plus"></i>Add new user</button>
                         </div>
                     </div>
                     <div className='user-body'>
@@ -99,10 +108,10 @@ const Users = (props) => {
                                                     <td>
                                                         <button className='btn btn-warning mx-3'
                                                             onClick={() => handleEditUser(item)}
-                                                        >Edit</button>
+                                                        ><i className="fa fa-pencil edit"></i></button>
                                                         <button className='btn btn-danger'
                                                             onClick={() => handleDeleteUser(item)}
-                                                        >Delete</button>
+                                                        ><i class="fa fa-trash-o delete"></i></button>
                                                     </td>
                                                 </tr>
                                             )

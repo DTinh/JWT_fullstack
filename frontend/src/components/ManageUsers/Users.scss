@@ -8,3 +8,37 @@
         }
     }
 }
+
+//User
+
+.container{
+    .manage-users-container{
+        .user-header{
+            .title{
+                text-align: center;
+            }
+            i{
+                padding-right: 10px;
+            }
+            .action{
+                .refesh{
+                    margin: 5px 5px;
+                }
+            }
+        }
+        .user-body{
+            .edit{
+                &:hover{
+                    color: yellow;
+                    cursor: pointer;
+                }
+            }
+            .delete{
+                &:hover{
+                    color: red;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
