@@ -7,14 +7,10 @@ const instance = axios.create({
     // withCredentials: true
 });
 
-
-
-
-
 instance.interceptors.response.use(
     (response) => {
         // Thrown error for request with OK status code
-        const { data } = response;
+        // const { data } = response;
         return response.data;
     }
 );

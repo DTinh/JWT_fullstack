@@ -24,7 +24,6 @@ const Users = (props) => {
         if (res && res.errCode === 0) {
             setTotalPage(res.data.totalPages);
             setListUser(res.data.users);
-
         }
     }
     const handlePageClick = async (event) => {
@@ -111,7 +110,7 @@ const Users = (props) => {
                                                         ><i className="fa fa-pencil edit"></i></button>
                                                         <button className='btn btn-danger'
                                                             onClick={() => handleDeleteUser(item)}
-                                                        ><i class="fa fa-trash-o delete"></i></button>
+                                                        ><i className="fa fa-trash-o delete"></i></button>
                                                     </td>
                                                 </tr>
                                             )
