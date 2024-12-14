@@ -5,9 +5,14 @@ import groupController from '../controllers/groupController';
 
 let router = express.Router();
 
+const testMiddleware = (req, res, next) => {
+    console.log("calling a middleware");
+
+}
 let initApiRoutes = (app) => {
+
     router.post('/register', handleRegister);
-    router.post('/login', handleLogin);
+    router.post('/login', testMiddleware, handleLogin);
 
 
     router.get('/user/read', userController.readFunc);
