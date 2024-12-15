@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import initApiRoutes from './route/api';
 import connectDB from './config/connectDB';
 import configCors from './config/cors';
+import cookieParser from 'cookie-parser';
 require('dotenv').config();
 
 
@@ -13,7 +14,8 @@ configCors(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-
+//cofig cookie parse 
+app.use(cookieParser())
 
 initApiRoutes(app);
 

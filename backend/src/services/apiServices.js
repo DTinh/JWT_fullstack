@@ -127,5 +127,5 @@ let handleUserLogin = (rawData) => {
     })
 }
 module.exports = {
-    handleRegister, handleUserLogin, checkEmailExist, checkPassword, checkPhoneExist
+    handleRegister, handleUserLogin, checkEmailExist, checkPassword, checkPhoneExist,
 }

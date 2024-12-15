@@ -1,18 +1,27 @@
 import express from "express";
-import apiControllers, { handleRegister, handleLogin } from '../controllers/apiControllers';
+import apiControllers, { handleRegister, handleLogin, getTest } from '../controllers/apiControllers';
 import userController from '../controllers/userController';
 import groupController from '../controllers/groupController';
-
+import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction';
 let router = express.Router();
 
 const testMiddleware = (req, res, next) => {
     console.log("calling a middleware");
-
 }
+// const checkUserLogin = (req, res, next) => {
+//     const nonSecurePaths = ['/register', '/login'];
+//     if (nonSecurePaths.includes(req.path)) return next();
+
+//     if (user) {
+
+//     }
+//     next();
+// }
 let initApiRoutes = (app) => {
+    router.all('*', checkUserJWT, checkUserPermission);
 
     router.post('/register', handleRegister);
-    router.post('/login', testMiddleware, handleLogin);
+    router.post('/login', handleLogin);
 
 
     router.get('/user/read', userController.readFunc);
