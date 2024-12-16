@@ -1,14 +1,17 @@
 
 import './Login.scss'
 import { useHistory } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { loginUser } from '../../services/apiServices';
 import bcrypt from 'bcryptjs';
+import { UserContext } from '../../context/UserContext';
 
 const salt = bcrypt.genSaltSync(10);
 
 const Login = (props) => {
+    const { loginContext } = React.useContext(UserContext);
+
     let history = useHistory();
     let handleCreateNewAccount = () => {
         history.push("/register");
@@ -36,12 +39,19 @@ const Login = (props) => {
         let res = await loginUser(valueLogin, password)
         if (res && res.errCode === 0) {
             toast.success(res.errMessage)
+            let groupWithRoles = res.data.groupWithRoles;
+            let email = res.data.email;
+            let username = res.data.username;
+            let token = res.data.access_token;
             let data = {
                 isAuthenticated: true,
-                token: 'fake token'
+                token,
+                account: {
+                    groupWithRoles, email, username
+                }
             }
             sessionStorage.setItem("account", JSON.stringify(data));
-
+            loginContext(data);
             history.push("/users");
             // window.location.reload();
         } else {

@@ -111,7 +111,9 @@ let handleUserLogin = (rawData) => {
                         errMessage: 'Login succeed!',
                         data: {
                             access_token: token,
-                            groupWithRoles
+                            groupWithRoles,
+                            email: user.email,
+                            username: user.username
                         }
                     })
                 }
