@@ -29,12 +29,7 @@ let handleLogin = async (req, res) => {
         })
     }
 }
-let getTest = (req, res) => {
-    // Cookies that have not been signed
-    console.log('Cookies: ', req.cookies)
-    res.send('hello');
 
-}
 module.exports = {
-    handleRegister, handleLogin, getTest
+    handleRegister, handleLogin
 }

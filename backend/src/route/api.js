@@ -1,5 +1,5 @@
 import express from "express";
-import apiControllers, { handleRegister, handleLogin, getTest } from '../controllers/apiControllers';
+import apiControllers, { handleRegister, handleLogin } from '../controllers/apiControllers';
 import userController from '../controllers/userController';
 import groupController from '../controllers/groupController';
 import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction';
@@ -22,7 +22,7 @@ let initApiRoutes = (app) => {
 
     router.post('/register', handleRegister);
     router.post('/login', handleLogin);
-
+    router.get('/account', userController.getUserAccount);
 
     router.get('/user/read', userController.readFunc);
     router.post('/user/create', userController.createFunc);

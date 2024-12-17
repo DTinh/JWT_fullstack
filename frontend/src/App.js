@@ -5,27 +5,46 @@ import {
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import _ from 'lodash';
 import AppRoutes from './routes/AppRoutes';
+import { BallTriangle } from 'react-loader-spinner';
+import { UserContext } from './context/UserContext';
+
+
 function App() {
-
-  const [account, setAccount] = useState({});
-
-  useEffect(() => {
-    let session = sessionStorage.getItem('account')
-    if (session) {
-      setAccount(JSON.parse(session));
-    }
-  }, []);
+  const { user } = React.useContext(UserContext);
   return (
-    <Router>
-      <div className='app-header'>
-        <Nav />
-      </div>
-      <div className='app-container'>
-        <AppRoutes />
-      </div>
+    <>
+      <Router>
+        {
+          user && user.isLoading ?
+            <div className='loading-container'>
+              <BallTriangle
+                height="80"
+                width="80"
+                color="#1877f2"
+                ariaLabel="hearts-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+              <div>Loading data...</div>
+            </div>
+
+            :
+            <>
+              <div className='app-header'>
+                <Nav />
+              </div>
+              <div className='app-container'>
+                <AppRoutes />
+              </div>
+            </>
+        }
+
+
+      </Router>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -39,7 +58,7 @@ function App() {
         theme="light"
       />
       <ToastContainer />
-    </Router>
+    </>
 
   );
 }
