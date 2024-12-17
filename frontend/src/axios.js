@@ -8,8 +8,11 @@ const instance = axios.create({
 });
 // instance.defaults.withCredentials = true;
 
+instance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("jwt")} `;
+
 instance.interceptors.response.use(
     (response) => {
+
         // Thrown error for request with OK status code
         // const { data } = response;
         return response.data;
