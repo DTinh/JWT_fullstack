@@ -24,6 +24,17 @@ body {
         color: white;
       }
   }
- 
+ .nav-header{
+    .bg-header{
+      background-color: #20232a;
+    }
+    a{
+      color: white !important;
+
+      &:hover {
+        color: #61dafb !important ;
+      }
+    }
+ }
   
  
